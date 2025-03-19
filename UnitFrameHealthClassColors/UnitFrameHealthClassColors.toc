@@ -1,0 +1,7 @@
+## Interface: 11200
+## Title: UnitFrameHealthClassColors
+## Notes: Changes Unit Frame health bars to their class colors
+## Author: Xennma
+## Version: 1.0.0
+
+UnitFrameHealthClassColors.lua
