@@ -12,6 +12,14 @@ local function UpdatePartyHealthBars()
 	end
 end
 
+local function UpdateTargetHealthBar()
+	if UnitIsPlayer("target") then
+		local _, class = UnitClass("target");
+		local classColor = RAID_CLASS_COLORS[class] or { r = 0, g = 1, b = 0, a = 1 };
+		TargetFrameHealthBar:SetStatusBarColor(classColor.r, classColor.g, classColor.b, 1);
+	end
+end
+
 local function UpdateTargetofTargetHealthBar()
 	if TargetofTargetFrame:IsShown() then
 		if UnitIsPlayer("targettarget") then
@@ -23,6 +31,9 @@ local function UpdateTargetofTargetHealthBar()
 			TargetofTargetHealthBar:SetStatusBarColor(0, 1, 0, 1);
 		end
 	end
+
+	-- Reupdate the target's color because sometimes it changes back to normal for some reason
+	UpdateTargetHealthBar();
 end
 
 local function UpdatePlayerHealthBar()
@@ -36,13 +47,7 @@ UnitFrameHealthClassColors:SetScript("OnEvent", function()
 		UpdatePlayerHealthBar();
 		UpdatePartyHealthBars();
 	elseif event == "PLAYER_TARGET_CHANGED" then
-		if UnitIsPlayer("target") then
-			local _, class = UnitClass("target");
-			local classColor = RAID_CLASS_COLORS[class] or { r = 0, g = 1, b = 0, a = 1 };
-			TargetFrameHealthBar:SetStatusBarColor(classColor.r, classColor.g, classColor.b, 1);
-
-			UpdateTargetofTargetHealthBar();
-		end
+		UpdateTargetHealthBar();
 	elseif event == "PARTY_MEMBERS_CHANGED" then
 		UpdatePartyHealthBars();
 	end
