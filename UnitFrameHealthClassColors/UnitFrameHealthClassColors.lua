@@ -69,6 +69,21 @@ function TargetofTarget_Update()
 	UpdateTargetofTargetHealthBar();
 end
 
+-- This is a bit heavier but really makes sure our colors are overriding the other changes from the normal event
+local _HealthBar_OnValueChanged = HealthBar_OnValueChanged;
+function HealthBar_OnValueChanged(value, smooth)
+	_HealthBar_OnValueChanged(value, smooth);
+
+	local unit = this.unit;
+	if unit == "player" then
+		UpdatePlayerHealthBar();
+	elseif unit == "target" or unit == "targettarget" then
+		UpdateTargetofTargetHealthBar();
+	elseif unit == "party1" or unit == "party2" or unit == "party3" or unit == "party4" then
+		UpdatePartyHealthBars();
+	end
+end
+
 UnitFrameHealthClassColors:RegisterEvent("PLAYER_ENTERING_WORLD");
 UnitFrameHealthClassColors:RegisterEvent("PLAYER_TARGET_CHANGED");
 UnitFrameHealthClassColors:RegisterEvent("PARTY_MEMBERS_CHANGED");
